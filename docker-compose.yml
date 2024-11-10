@@ -15,12 +15,13 @@ services:
       - DB_PORT=3306
       - DB_DATABASE=qrcode_db
       - DB_USERNAME=root
-      - DB_PASSWORD=root
+      - DB_PASSWORD=test
     volumes:
       - .:/var/www
     networks:
       - laravel
-
+    depends_on:
+      - db
   nginx:
     image: nginx:latest
     container_name: nginx_webserver

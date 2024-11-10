@@ -1,66 +1,111 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# qrCode API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Table des matières
 
-## About Laravel
+- [qrCode API](#qr-code-api)
+  - [Table des matières](#table-des-matières)
+  - [À propos du projet](#à-propos-du-projet)
+  - [Prérequis](#prérequis)
+  - [Installation](#installation)
+  - [Endpoints](#Endpoints)
+  - [Fonctionnalités](#fonctionnalités)
+  - [Tests](#tests)
+  - [Docker](#docker)
+  - [Auteur](#auteur)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Á propos du projet
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+qrCode API est un projet de gestion de qrcode. Ce projet est une API REST qui permet de creer et de gerer des qrcodes. L'API etant concu avec Laravel et MySQL pour la base de donnees.Le tout est déployé à l'aide de Docker pour faciliter la gestion des conteneurs.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Prérequis
+Avant de démarrer, assurez-vous d'avoir les outils suivants installés sur votre machine :
 
-## Learning Laravel
+- Docker
+- Docker Compose
+- PHP 8.2+
+- Composer
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Installation
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+Pour installer qrCode API, suivez les instructions suivantes :
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+# Cloner le repository
+git clone https://github.com/nsconsult/qrCode-CRUD.git
 
-## Laravel Sponsors
+# Entrer dans le dossier du projet  
+cd qrCode-CRUD
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+# Configurer les variables d'environnement en modifiant les paramètres de la base de données pour qu'ils correspondent à votre configuration Docker.
 
-### Premium Partners
+cp .env.example .env
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+# Construisez les conteneurs Docker en utilisant Docker Compose
 
-## Contributing
+docker-compose build
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+docker-compose up -d
 
-## Code of Conduct
+#Installer les dependances laravel
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+docker exec -it laravel_app bash
+    .composer install
+    .php artisan key:generate
+    .php artisan migrate
 
-## Security Vulnerabilities
+```
+Une fois toutes ces process finis, vous pouvez lancer le serveur de l'API sur http://localhost:8000
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Endpoints
 
-## License
+Voici les principaux endpoints disponibles dans l'API :
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- `GET /api/qrcodes`: Retourne une liste paginée de QR codes.
+- `POST /api/qrcodes`: Créer un nouveau QR code qui prend en charge les données suivantes : `author` et `data`.
+- `GET /api/qrcodes/{id}`: Retourne les données d'un QR code spécifique.
+- `PUT /api/qrcodes/{id}`: Mettre à jour un QR code.
+- `DELETE /api/qrcodes/{id}`: Supprimer un QR code.
+
+Chaque endpoint supporte des paramètres de requête pour la pagination et la recherche.
+
+## Fonctionnalités
+
+qrCode API offre les fonctionnalités suivantes :
+
+- Création de QR codes.
+- Mise à jour de QR codes existants.
+- Suppression de QR codes.
+- Pagination des QR codes.
+- Recherche des QR codes.
+- Affichage des données d'un QR code spécial.
+-Deploiement avec Docker.
+
+## Tests
+Les tests peuvent être exécutés pour s'assurer que toutes les fonctionnalités de l'API fonctionnent correctement. Pour lancer les tests, utilisez la commande suivante :
+
+```bash
+php artisan test
+```
+
+## Docker
+
+Le projet est conçu pour être facilement déployé avec Docker. Voici une description des services utilisés :
+
+- `laravel_app`: Conteneur de l'application Laravel.
+- `mysql_db`: Conteneur de la base de données MySQL.
+- `nginx_webserver`: Conteneur du serveur web NGINX.
+
+### Commandes Docker utiles
+
+- `docker-compose build`: Construire les conteneurs Docker.
+- `docker-compose up -d`: Démarrer les conteneurs Docker en arriere-plan.
+- `docker-compose down`: Arreter les conteneurs Docker.
+- `docker exec -it laravel_app bash`: Ouvrir un shell dans le conteneur de l'application Laravel.
+- `docker exec -it mysql_db bash`: Ouvrir un shell dans le conteneur de la base de données MySQL.
+- `docker logs [nom du conteneur]`: Afficher les logs d'un conteneur.
+
+## Auteur
+
+qrCode API est construit par:
+- Nazim ALI - [nazim.ali@epitech.eu](mailto:nazim.ali@epitech.eu)
+
